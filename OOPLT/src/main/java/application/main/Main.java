@@ -4,6 +4,7 @@ import application.UI.Gui;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -11,6 +12,9 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
+
+import java.util.Objects;
+
 
 public class Main extends Application {
 
@@ -22,6 +26,8 @@ public class Main extends Application {
         mb.setPrefWidth(2160);
 
         GridPane EdgeUI = gui.createUI();
+
+        new Image(Objects.requireNonNull(getClass().getResourceAsStream("/image/Router.png")));
 
         Menu Graph = new Menu("Graph");
         Menu Algorithm = new Menu("Algorithm"); // New menu for algorithms

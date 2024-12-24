@@ -20,6 +20,8 @@ import javafx.stage.Window;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
+import java.util.Objects;
 import java.util.Stack;
 
 public class Gui {
@@ -38,60 +40,49 @@ public class Gui {
         return gridPane;
     }
 
-    public void addSearchEdgeUI(GridPane gridPane, String str){
-        // Add Name Label
-        Label nameLabel = new Label("From Vertex : ");
-        gridPane.add(nameLabel, 0,2);
-        TextField nameField = new TextField();
-        nameField.setPromptText(" Enter From Vertex");
-        nameField.setPrefHeight(30);
-        gridPane.add(nameField, 1,2);
+public void addSearchEdgeUI(GridPane gridPane, String str){
+    // Add Name Label
+    Label nameLabel = new Label("From Vertex : ");
+    gridPane.add(nameLabel, 0,2);
+    TextField nameField = new TextField();
+    nameField.setPromptText(" Enter From Vertex");
+    nameField.setPrefHeight(30);
+    gridPane.add(nameField, 1,2);
 
-        Label toLabel = new Label("To Vertex : ");
-        gridPane.add(toLabel, 2,2);
-        TextField toField = new TextField();
-        toField.setPromptText("Enter to Vertex");
-        toField.setPrefHeight(30);
-        gridPane.add(toField, 3,2);
+    Label toLabel = new Label("To Vertex : ");
+    gridPane.add(toLabel, 2,2);
+    TextField toField = new TextField();
+    toField.setPromptText("Enter to Vertex");
+    toField.setPrefHeight(30);
+    gridPane.add(toField, 3,2);
 
-        Button SearchButton = new Button(str);
-        SearchButton.setPrefHeight(30);
-        SearchButton.setDefaultButton(true);
-        SearchButton.setPrefWidth(100);
-        gridPane.add(SearchButton, 0, 3, 4, 1);
-        GridPane.setValignment(SearchButton, VPos.CENTER);
-        GridPane.setHalignment(SearchButton, HPos.CENTER);
+    Button SearchButton = new Button(str);
+    SearchButton.setPrefHeight(30);
+    SearchButton.setDefaultButton(true);
+    SearchButton.setPrefWidth(100);
+    gridPane.add(SearchButton, 0, 3, 4, 1);
+    GridPane.setValignment(SearchButton, VPos.CENTER);
+    GridPane.setHalignment(SearchButton, HPos.CENTER);
 
-        SearchButton.setOnAction(_ -> {
-            if(nameField.getText().isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), "Error!", "Please enter name");
-            }else if(toField.getText().isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), "Error!", "Please enter name");
+    SearchButton.setOnAction(_ -> {
+        if(nameField.getText().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), "Error!", "Please enter name");
+        }else if(toField.getText().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), "Error!", "Please enter name");
+        }else if(Objects.equals(graph.SearchNode(nameField.getText()), "Node not Found") || graph.SearchNode(toField.getText()).equals("Node not Found")) {
+            showAlert(Alert.AlertType.ERROR, gridPane.getScene().getWindow(), "Error!", "Node not Found");
+        }
+        else {
+            if(Objects.equals(str, "Get Path")) {
+                String output = graph.getPath(nameField.getText(), toField.getText());
+                showAlert(Alert.AlertType.INFORMATION, gridPane.getScene().getWindow(), " Path ", output);
             }
-            else {
-                switch (str) {
-                    case "Search Edge": {
-                        String output = graph.SearchEdge(nameField.getText(), toField.getText());
-                        showAlert(Alert.AlertType.INFORMATION, gridPane.getScene().getWindow(), "Addition Successful!", output);
-                        break;
-                    }
-                    case "Delete Edge": {
-                        String output = graph.DeleteEdge(nameField.getText(), toField.getText());
-                        showAlert(Alert.AlertType.INFORMATION, gridPane.getScene().getWindow(), "Deletion Successful!", output);
-                        break;
-                    }
-                    case "Get Path": {
-                        String output = graph.getPath(nameField.getText(), toField.getText());
-                        showAlert(Alert.AlertType.INFORMATION, gridPane.getScene().getWindow(), " Path ", output);
-                        break;
-                    }
-                }
-                nameField.setText(null);
-                toField.setText(null);
-            }
-            //add node here
-        });
-    }
+            nameField.setText(null);
+            toField.setText(null);
+        }
+        //add node here
+    });
+}
     private void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

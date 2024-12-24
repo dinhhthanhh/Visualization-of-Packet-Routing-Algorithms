@@ -1,16 +1,11 @@
 package application.algorithm;
 
-
-
 import application.model.Edge;
 import application.model.Node;
 
 import java.util.*;
 
 public class Dijkstra extends GraphAlgorithm {
-    public Dijkstra() {
-        super();  // Gọi constructor của lớp cha
-    }
 
     public Dijkstra(boolean directed) {
         this.directed = directed;

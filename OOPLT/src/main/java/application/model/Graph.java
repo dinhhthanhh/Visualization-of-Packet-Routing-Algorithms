@@ -1,6 +1,7 @@
 package application.model;
 
 import application.algorithm.Dijkstra;
+import application.algorithm.GraphAlgorithm;
 
 import java.util.*;
 public class Graph {
@@ -27,27 +28,18 @@ public class Graph {
         return ("Node not Found");
     }
     private final Dijkstra adj = new Dijkstra(true);
+    private final GraphAlgorithm ga = new GraphAlgorithm(true);
     public void DeleteNode(String node){
         for(Node n:nodes){
             if(n.getName().equals(node)){
 //                nodes.remove(n);
-                adj.DeleteNo(n);
+                ga.DeleteNo(n);
                 nodes.remove(n);
                 return;
             }
         }
     }
 
-    public String ModifyNode(String node, double x, double y){
-        for(Node i:nodes){
-            if(i.getName().equals(node)){
-                i.x = x;
-                i.y = y;
-                return ("Node Modified");
-            }
-        }
-        return ("Node not Found");
-    }
     public List<Edge> getEdges() {
         List<Edge> edges = new ArrayList<>();
         for (Node node : nodes) {
@@ -56,7 +48,7 @@ public class Graph {
         return edges;
     }
 
-    public String addEdge(String from, String to, double weight){
+    public void addEdge(String from, String to, double weight){
         Node fromNode=null,toNode=null;
         for (Node i :nodes) {
             if(i.getName().equals(from)){
@@ -67,35 +59,32 @@ public class Graph {
             }
         }
         if(fromNode == null)
-            return ("Form node not found");
+            System.out.println("Form node not found");
         else if(toNode == null)
-            return ("To node not Found");
+            System.out.println("To node not Found");
         else {
-            adj.addEdge(fromNode, toNode, weight);
-            return ("Edge added Successfully");
+            ga.addEdge(fromNode, toNode, weight);
+            System.out.println ("Edge added Successfully");
+            syncNodesAndEdges();
         }
     }
 
-    public String SearchEdge(String from, String to){
-        Node fromNode=null,toNode=null;
-        for (Node i :nodes) {
-            if(i.getName().equals(from)){
-                fromNode = i;
-            }
-            if(i.getName().equals(to)){
-                toNode = i;
-            }
+    public void syncNodesAndEdges() {
+        // Đồng bộ các node
+        for (Node node : ga.nodes) {
+            adj.addNode(node);
+//            bellmanFord.addNode(node);
+//            flooding.addNode(node);
         }
-        if(fromNode == null || toNode == null) {
-            return ("Edge Not Found");
-        }
-        else
-        {
-            if(adj.hasEdge(fromNode, toNode)){
-                return ("Edge Found \n"+"Weight is "+adj.Weight(fromNode,toNode));
-            }
-            else
-                return ("Edge Not Found");
+
+        // Đồng bộ các cạnh
+        ArrayList<Edge> edges = new ArrayList<>();
+        ga.copyEdge(edges);  // Sao chép các cạnh từ ga
+
+        for (Edge edge : edges) {
+            adj.addEdge(edge.source, edge.destination, edge.weight);
+//            bellmanFord.addEdge(edge.source, edge.destination, edge.weight);
+//            flooding.addEdge(edge.source, edge.destination, edge.weight);
         }
     }
 
@@ -112,25 +101,7 @@ public class Graph {
         targetNode.name = newName;
     }
 
-
-    public String ModifyEdge(String from, String to, double weight){
-        Node fromNode=null,toNode=null;
-        for (Node i :nodes) {
-            if(i.getName().equals(from)){
-                fromNode = i;
-            }
-            if(i.getName().equals(to)){
-                toNode = i;
-            }
-        }
-        if(fromNode == null || toNode == null)
-            return ("Edge not Found");
-        else {
-            adj.ModifyEdgeWeight(fromNode, toNode,weight);
-            return ("Edge Modified Successfully");
-        }
-    }
-    public String DeleteEdge(String from, String to){
+    public void DeleteEdge(String from, String to){
         Node fromNode=null,toNode=null;
         for (Node i :nodes) {
             if(i.getName().equals(from)){
@@ -141,18 +112,18 @@ public class Graph {
             }
         }
         if(fromNode == null || toNode == null){
-            return ("Edge not Found");
+            System.out.println ("Edge not Found");
         }
         else if(fromNode == toNode){
-            return ("Both Nodes are same!");
+            System.out.println("Both Nodes are same!");
         }
         else {
 
-            if(adj.DeleteEd(fromNode, toNode)){
-                return ("Edge deleted");
+            if(ga.DeleteEd(fromNode, toNode)){
+                System.out.println ("Edge deleted");
             }
             else
-                return ("Edge Not Found");
+                System.out.println("Edge Not Found");
         }
     }
 

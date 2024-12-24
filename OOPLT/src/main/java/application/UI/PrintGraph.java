@@ -154,7 +154,6 @@ public class PrintGraph {
             }
         });
 
-
         circle.setOnMouseDragged(mouseEvent -> {
             if (!addNode.isSelected() && !addEdge.isSelected() && !deleteNode.isSelected() && !deleteEdge.isSelected()) {
                 circle.setCenterX(mouseEvent.getX() + dragDelta.x);
@@ -293,7 +292,7 @@ public class PrintGraph {
             PathTransition pathTransition = new PathTransition();
             switch (shape) {
                 case "Circle":
-                    shape1 = new Circle(fromNode.getNodeX(), fromNode.getNodeY(), 6, Color.BEIGE);
+                    shape1 = new Circle(fromNode.getNodeX(), fromNode.getNodeY(), 6, Color.YELLOW);
                     pane.getChildren().add(shape1);
                     pathTransition.setNode(shape1);
                     break;

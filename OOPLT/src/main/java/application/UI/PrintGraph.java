@@ -270,11 +270,11 @@ public class PrintGraph {
             }
         }
     }
-    void animatePath(Pane pane,String from,String to,String shape){
+    void animatePathdijstra(Pane pane,String from,String to,String shape){
         Node fromNode = graph.getNode(from);
         Path path = new Path();
         path.getElements().add(new MoveTo(fromNode.getNodeX(),fromNode.getNodeY()));
-        Stack<Node> nodeStack = graph.getNodePath(from, to);
+        Stack<Node> nodeStack = graph.getNodePathdijkstra(from, to);
         if(nodeStack.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("");
@@ -292,7 +292,143 @@ public class PrintGraph {
             PathTransition pathTransition = new PathTransition();
             switch (shape) {
                 case "Circle":
-                    shape1 = new Circle(fromNode.getNodeX(), fromNode.getNodeY(), 6, Color.YELLOW);
+                    shape1 = new Circle(fromNode.getNodeX(), fromNode.getNodeY(), 6, Color.BEIGE);
+                    pane.getChildren().add(shape1);
+                    pathTransition.setNode(shape1);
+                    break;
+                case "Square":
+                    shape1 = new Rectangle(0, 0, 10, 10);
+                    shape1.setFill(Color.DARKVIOLET);
+                    pane.getChildren().add(shape1);
+                    pathTransition.setNode(shape1);
+                    break;
+                case "Plus":
+                    shape1 = new Line(5, 10, 15, 10);
+                    shape2 = new Line(10, 5, 10, 15);
+                    shape1.setStrokeWidth(5);
+                    shape2.setStrokeWidth(5);
+                    area = Shape.union(shape1, shape2);
+                    area.setFill(Color.ROYALBLUE);
+                    pane.getChildren().add(area);
+                    pathTransition.setNode(area);
+                    break;
+                case "Cross":
+                    shape1 = new Line(5, 5, 15, 15);
+                    shape2 = new Line(5, 15, 15, 5);
+                    shape1.setStrokeWidth(5);
+                    shape2.setStrokeWidth(5);
+                    area = Shape.union(shape1, shape2);
+                    area.setFill(Color.DARKCYAN);
+                    pane.getChildren().add(area);
+                    pathTransition.setNode(area);
+                    break;
+                case "Triangle":
+                    shape1 = new Polygon();
+                    ((Polygon) shape1).getPoints().addAll(0.0, 10.0, 20.0, 10.0, 10.0, 20.0);
+                    shape1.setFill(Color.GOLD);
+                    pane.getChildren().add(shape1);
+                    pathTransition.setNode(shape1);
+                    break;
+            }
+            pathTransition.setDuration(Duration.seconds(2));
+            pathTransition.setPath(path);
+            pathTransition.setCycleCount(PathTransition.INDEFINITE);
+            pathTransition.play();
+        }
+    }
+    void animatePathbellmanford(Pane pane,String from,String to,String shape){
+        Node fromNode = graph.getNode(from);
+        Path path = new Path();
+        path.getElements().add(new MoveTo(fromNode.getNodeX(),fromNode.getNodeY()));
+        Stack<Node> nodeStack1 = graph.getNodePathbellmanford(from, to);
+//        while (!graph.getNodePathbellmanford(from, to).isEmpty()) {
+//            Node node = graph.getNodePathbellmanford(from, to).pop();
+//            System.out.print(node.getName() + " "); // In ra tên của node
+//        }
+        if(nodeStack1.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("");
+            alert.setContentText("No Path Exist");
+            alert.initOwner(pane.getScene().getWindow());
+            alert.show();
+        }
+        else {
+            while (!nodeStack1.isEmpty()) {
+                Node node = nodeStack1.pop();
+                path.getElements().add(new LineTo(node.getNodeX(), node.getNodeY()));
+            }
+            graph.getbf().resetNodesVisited();
+            Shape shape1, shape2, area;
+            PathTransition pathTransition = new PathTransition();
+            switch (shape) {
+                case "Circle":
+                    shape1 = new Circle(fromNode.getNodeX(), fromNode.getNodeY(), 6, Color.BEIGE);
+                    pane.getChildren().add(shape1);
+                    pathTransition.setNode(shape1);
+                    break;
+                case "Square":
+                    shape1 = new Rectangle(0, 0, 10, 10);
+                    shape1.setFill(Color.DARKVIOLET);
+                    pane.getChildren().add(shape1);
+                    pathTransition.setNode(shape1);
+                    break;
+                case "Plus":
+                    shape1 = new Line(5, 10, 15, 10);
+                    shape2 = new Line(10, 5, 10, 15);
+                    shape1.setStrokeWidth(5);
+                    shape2.setStrokeWidth(5);
+                    area = Shape.union(shape1, shape2);
+                    area.setFill(Color.ROYALBLUE);
+                    pane.getChildren().add(area);
+                    pathTransition.setNode(area);
+                    break;
+                case "Cross":
+                    shape1 = new Line(5, 5, 15, 15);
+                    shape2 = new Line(5, 15, 15, 5);
+                    shape1.setStrokeWidth(5);
+                    shape2.setStrokeWidth(5);
+                    area = Shape.union(shape1, shape2);
+                    area.setFill(Color.DARKCYAN);
+                    pane.getChildren().add(area);
+                    pathTransition.setNode(area);
+                    break;
+                case "Triangle":
+                    shape1 = new Polygon();
+                    ((Polygon) shape1).getPoints().addAll(0.0, 10.0, 20.0, 10.0, 10.0, 20.0);
+                    shape1.setFill(Color.GOLD);
+                    pane.getChildren().add(shape1);
+                    pathTransition.setNode(shape1);
+                    break;
+            }
+            pathTransition.setDuration(Duration.seconds(2));
+            pathTransition.setPath(path);
+            pathTransition.setCycleCount(PathTransition.INDEFINITE);
+            pathTransition.play();
+        }
+    }
+    void animatePathflooding(Pane pane,String from,String to,String shape){
+        Node fromNode = graph.getNode(from);
+        Path path = new Path();
+        path.getElements().add(new MoveTo(fromNode.getNodeX(),fromNode.getNodeY()));
+        Stack<Node> nodeStack = graph.getNodePathflooding(from, to);
+        if(nodeStack.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("");
+            alert.setContentText("No Path Exist");
+            alert.initOwner(pane.getScene().getWindow());
+            alert.show();
+        }
+        else {
+            while (!nodeStack.isEmpty()) {
+                Node node = nodeStack.pop();
+                path.getElements().add(new LineTo(node.getNodeX(), node.getNodeY()));
+            }
+            graph.getga().resetNodesVisited();
+            Shape shape1, shape2, area;
+            PathTransition pathTransition = new PathTransition();
+            switch (shape) {
+                case "Circle":
+                    shape1 = new Circle(fromNode.getNodeX(), fromNode.getNodeY(), 6, Color.BEIGE);
                     pane.getChildren().add(shape1);
                     pathTransition.setNode(shape1);
                     break;

@@ -3,11 +3,7 @@ package application.algorithm;
 import application.model.Node;
 import application.model.Edge;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 public class GraphAlgorithm {
     protected boolean directed;
@@ -62,21 +58,53 @@ public class GraphAlgorithm {
     }
 
     public boolean DeleteEd(Node a, Node b) {
-        for (Edge edge : a.getEdge()) {
+        boolean removed = false;
+
+        // Xóa cạnh từ a đến b
+        for (Iterator<Edge> iterator = a.getEdge().iterator(); iterator.hasNext(); ) {
+            Edge edge = iterator.next();
             if (edge.getSource() == a && edge.getDestination() == b) {
-                // Update the value in case it's a different one now
-                a.getEdge().remove(edge);
-                return true;
+                iterator.remove(); // Xóa cạnh
+                removed = true;
+                break;
             }
         }
-        return false;
+
+        // Vo huong
+        if (!directed) {
+            for (Iterator<Edge> iterator = b.getEdge().iterator(); iterator.hasNext(); ) {
+                Edge edge = iterator.next();
+                if (edge.getSource() == b && edge.getDestination() == a) {
+                    iterator.remove(); // Xóa cạnh
+                    removed = true;
+                    break;
+                }
+            }
+        }
+        return removed;
     }
+
     public void DeleteNo(Node from){
         for(Node node : nodes){
             node.getEdge().removeIf(edge -> edge.getSource() == from || edge.getDestination() == from);
         }
         nodes.remove(from);
+        System.out.println("Node delete Successfully");
     }
     //public abstract String getShortestPath(Node start, Node end);
-
+    // Kiểm tra xem có cạnh giữa hai node không
+    public boolean hasEdge(Node source, Node destination) {
+        LinkedList<Edge> edges = source.getEdge();
+        for (Edge edge : edges) {
+            if (edge.getDestination() == destination) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void resetNodesVisited() {
+        for (Node node : nodes) {
+            node.unvisited();
+        }
+    }
 }

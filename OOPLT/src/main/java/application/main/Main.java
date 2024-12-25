@@ -27,7 +27,7 @@ public class Main extends Application {
 
         GridPane EdgeUI = gui.createUI();
 
-        new Image(Objects.requireNonNull(getClass().getResourceAsStream("/image/Router.png")));
+        primaryStage.getIcons().add(new Image((Objects.requireNonNull(getClass().getResourceAsStream("/images/Router.png")))));
 
         Menu Graph = new Menu("Graph");
         Menu Algorithm = new Menu("Algorithm"); // New menu for algorithms

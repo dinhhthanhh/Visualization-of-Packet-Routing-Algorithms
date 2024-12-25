@@ -7,16 +7,15 @@ import java.util.*;
 
 public class Dijkstra extends GraphAlgorithm {
 
-    public Dijkstra(boolean directed) {
-        this.directed = directed;
-        nodes = new HashSet<>();
+    public Dijkstra() {
+        super();
     }
+//  Mot chieu
+//    public Dijkstra(boolean directed) {
+//        this.directed = directed;
+//        nodes = new HashSet<>();
+//    }
 
-    public void resetNodesVisited() {
-        for (Node node : nodes) {
-            node.unvisited();
-        }
-    }
     public String DijkstraShortestPath(Node start, Node end) {
 
         String output ="";
@@ -79,7 +78,7 @@ public class Dijkstra extends GraphAlgorithm {
             }
         }
     }
-    public Stack<Node> animatePath(Node start, Node end) {
+    public Stack<Node> animatePathadj(Node start, Node end) {
 
         Stack<Node> path = new Stack<>();
         HashMap<Node, Node> changedAt = new HashMap<>();
@@ -138,7 +137,7 @@ public class Dijkstra extends GraphAlgorithm {
             }
         }
     }
-    private Node closestReachableUnvisited(HashMap<Node, Double> shortestPathMap) {
+    public Node closestReachableUnvisited(HashMap<Node, Double> shortestPathMap) {
 
         double shortestDistance = Double.POSITIVE_INFINITY;
         Node closestReachableNode = null;
@@ -157,5 +156,4 @@ public class Dijkstra extends GraphAlgorithm {
         }
         return closestReachableNode;
     }
-
 }

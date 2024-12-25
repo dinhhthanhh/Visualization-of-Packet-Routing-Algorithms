@@ -1,11 +1,14 @@
 package application.model;
 
-import application.algorithm.Dijkstra;
-import application.algorithm.GraphAlgorithm;
+import application.algorithm.*;
 
 import java.util.*;
 public class Graph {
     private final LinkedList<Node> nodes = new LinkedList<>();
+    private final GraphAlgorithm ga = new GraphAlgorithm(true);
+    private final Dijkstra adj = new Dijkstra();
+    private final BellmanFord bf = new BellmanFord();
+    private final Flooding fl = new Flooding();
 
     public void addNode(double x, double y, String name){
         Node temp = new Node(x,y,name);
@@ -28,8 +31,6 @@ public class Graph {
         }
         return ("Node not Found");
     }
-    private final Dijkstra adj = new Dijkstra(true);
-    private final GraphAlgorithm ga = new GraphAlgorithm(true);
     public void DeleteNode(String node){
         for(Node n:nodes){
             if(n.getName().equals(node)){
@@ -64,28 +65,18 @@ public class Graph {
         else if(toNode == null)
             System.out.println("To node not Found");
         else {
+            // Kiểm tra xem cạnh đã tồn tại chưa
+            for (Edge edge : fromNode.edges) {
+                if (edge.destination.equals(toNode)) {
+                    System.out.println("Edge from " + from + " to " + to + " already exists");
+                }
+            }
+
+            // Thêm cạnh mới nếu chưa tồn tại
             ga.addEdge(fromNode, toNode, weight);
+            adj.addEdge(fromNode, toNode, weight);
+            bf.addEdge(fromNode, toNode, weight);
             System.out.println ("Edge added Successfully");
-            syncNodesAndEdges();
-        }
-    }
-
-    public void syncNodesAndEdges() {
-        // Đồng bộ các node
-        for (Node node : ga.nodes) {
-            adj.addNode(node);
-//            bellmanFord.addNode(node);
-//            flooding.addNode(node);
-        }
-
-        // Đồng bộ các cạnh
-        ArrayList<Edge> edges = new ArrayList<>();
-        ga.copyEdge(edges);  // Sao chép các cạnh từ ga
-
-        for (Edge edge : edges) {
-            adj.addEdge(edge.source, edge.destination, edge.weight);
-//            bellmanFord.addEdge(edge.source, edge.destination, edge.weight);
-//            flooding.addEdge(edge.source, edge.destination, edge.weight);
         }
     }
 
@@ -131,12 +122,12 @@ public class Graph {
     public String getPath(String from, String to){
         String output;
         Node fromNode=null,toNode=null;
-        for (Node i :nodes) {
+        for (Node i : nodes) {
             if(i.getName().equals(from)){
                 fromNode = i;
             }
             if(i.getName().equals(to)){
-                toNode =i;
+                toNode = i;
             }
         }
         output = adj.DijkstraShortestPath(fromNode,toNode);
@@ -147,11 +138,20 @@ public class Graph {
     public LinkedList<Node> getNodes(){
         return nodes;
     }
+    public GraphAlgorithm getga(){
+        return ga;
+    }
     public Dijkstra getAdj(){
         return adj;
     }
+    public BellmanFord getbf(){
+        return bf;
+    }
+    public Flooding getfl(){
+        return fl;
+    }
 
-    public Stack<Node> getNodePath(String from, String to){
+    public Stack<Node> getNodePathdijkstra(String from, String to){
         Node fromNode=null,toNode=null;
         for (Node i :nodes) {
             if(i.getName().equals(from)){
@@ -161,8 +161,30 @@ public class Graph {
                 toNode = i;
             }
         }
-        return adj.animatePath(fromNode,toNode);
+        return adj.animatePathadj(fromNode,toNode);
     }
-
-
+    public Stack<Node> getNodePathbellmanford(String from, String to){
+        Node fromNode=null,toNode=null;
+        for (Node i :nodes) {
+            if(i.getName().equals(from)){
+                fromNode = i;
+            }
+            if(i.getName().equals(to)){
+                toNode = i;
+            }
+        }
+        return bf.animatePathbf(fromNode,toNode);
+    }
+    public Stack<Node> getNodePathflooding(String from, String to){
+        Node fromNode=null,toNode=null;
+        for (Node i :nodes) {
+            if(i.getName().equals(from)){
+                fromNode = i;
+            }
+            if(i.getName().equals(to)){
+                toNode = i;
+            }
+        }
+        return fl.animatePathfl(fromNode,toNode);
+    }
 }

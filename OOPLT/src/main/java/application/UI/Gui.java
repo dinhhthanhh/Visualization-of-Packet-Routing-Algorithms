@@ -132,7 +132,7 @@ public void addSearchEdgeUI(GridPane gridPane, String str){
         ComboBox<String> comboBox = new ComboBox<>(FXCollections.observableArrayList(typeOfNodes));
         EventHandler<ActionEvent> newEvent = _ -> {
             str[0] = comboBox.getValue();
-            SearchButton.setOnAction(_ -> printGraph.animatePath(pane,nameField.getText(),toField.getText(),str[0]));
+            SearchButton.setOnAction(_ -> printGraph.animatePathdijstra(pane,nameField.getText(),toField.getText(),str[0]));
         };
 
         comboBox.setLayoutX(285);
@@ -206,7 +206,8 @@ public void addSearchEdgeUI(GridPane gridPane, String str){
                     bellmanFord.addEdge(edge.getSource(), edge.getDestination(), edge.weight);
                 }
 
-                Stack<String> path = bellmanFord.getNodePath(source, target);
+                // Sử dụng animatePath để lấy đường đi
+                Stack<Node> path = bellmanFord.animatePathbf(source, target);
                 if (path == null) {
                     // Nếu path trả về null, tức là có chu trình âm
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Graph contains a negative weight cycle!", ButtonType.OK);
@@ -214,8 +215,7 @@ public void addSearchEdgeUI(GridPane gridPane, String str){
                     return;
                 }
 
-                // Animate path using printGraph
-                printGraph.animatePath(pane, from, to, str[0]);
+                printGraph.animatePathbellmanford(pane, from, to, str[0]);
             });
         };
 
@@ -226,7 +226,8 @@ public void addSearchEdgeUI(GridPane gridPane, String str){
 
         printGraph.getGraphPane(pane, false);
     }
-    void animateFloodingGui(Pane pane) {
+
+    public void animateFloodGui(Pane pane) {
         String[] typeOfNodes = {"Circle", "Square", "Plus", "Cross", "Triangle"};
         Label nameLabel = new Label("From Vertex : ");
         nameLabel.setLayoutX(10);
@@ -251,7 +252,7 @@ public void addSearchEdgeUI(GridPane gridPane, String str){
         toField.setLayoutY(37);
         pane.getChildren().addAll(toLabel, toField);
 
-        Button searchButton = new Button("Flood");
+        Button searchButton = new Button("PATH");
         searchButton.setPrefHeight(15);
         searchButton.setPrefWidth(60);
         searchButton.setLayoutX(395);
@@ -282,23 +283,25 @@ public void addSearchEdgeUI(GridPane gridPane, String str){
                     return;
                 }
 
-                Flooding flooding = new Flooding();
+                Flooding flood = new Flooding();
                 for (Node node : graph.getNodes()) {
-                    flooding.addNode(node);
+                    flood.addNode(node);
                 }
                 for (Edge edge : graph.getEdges()) {
-                    flooding.addEdge(edge.getSource(), edge.getDestination(), edge.weight);
+                    flood.addEdge(edge.getSource(), edge.getDestination(), edge.weight);
                 }
 
-                Stack<String> path = flooding.getNodePath(source, target);
+                // Sử dụng animatePathfl để lấy đường đi
+                Stack<Node> path = flood.animatePathfl(source, target);
                 if (path == null) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "No path found between the nodes!", ButtonType.OK);
+                    // Nếu không tìm thấy đường đi
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "No path found between the selected vertices!", ButtonType.OK);
                     alert.show();
                     return;
                 }
 
-                // Animate path using printGraph
-                printGraph.animatePath(pane, from, to, str[0]);
+                // Gọi hàm để hiển thị đồ thị và đường đi
+                printGraph.animatePathflooding(pane, from, to, str[0]);
             });
         };
 
@@ -308,5 +311,6 @@ public void addSearchEdgeUI(GridPane gridPane, String str){
         pane.getChildren().add(comboBox);
 
         printGraph.getGraphPane(pane, false);
+
     }
 }

@@ -18,8 +18,9 @@ public class Node {
 
     Node(double x,double y, String name) {
         circle = new Circle(10);
-        circle.setFill(Color.GAINSBORO);
-        circle.setStroke(Color.CORNFLOWERBLUE);
+        circle.setFill(Color.LIGHTSKYBLUE);
+        circle.setStroke(Color.DODGERBLUE);
+        circle.setPickOnBounds(false);
         text = new Text(name);
         this.x = x;
         this.y = y;

@@ -29,8 +29,8 @@ public class Flooding extends GraphAlgorithm {
                 break;
             }
 
-            for (Edge edge : current.edges) {
-                Node neighbor = edge.destination;
+            for (Edge edge : current.getEdge()) {
+                Node neighbor = edge.getDestination();
                 if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
                     queue.add(neighbor);
@@ -45,7 +45,7 @@ public class Flooding extends GraphAlgorithm {
 
         Node current = end;
         while (current != null) {
-            path.push(current.name);
+            path.push(current.getName());
             current = predecessor.get(current);
         }
 

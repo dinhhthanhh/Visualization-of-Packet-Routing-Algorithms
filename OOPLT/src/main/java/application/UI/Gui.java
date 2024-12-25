@@ -203,7 +203,7 @@ public void addSearchEdgeUI(GridPane gridPane, String str){
                     bellmanFord.addNode(node);
                 }
                 for (Edge edge : graph.getEdges()) {
-                    bellmanFord.addEdge(edge.source, edge.destination, edge.weight);
+                    bellmanFord.addEdge(edge.getSource(), edge.getDestination(), edge.weight);
                 }
 
                 Stack<String> path = bellmanFord.getNodePath(source, target);
@@ -287,7 +287,7 @@ public void addSearchEdgeUI(GridPane gridPane, String str){
                     flooding.addNode(node);
                 }
                 for (Edge edge : graph.getEdges()) {
-                    flooding.addEdge(edge.source, edge.destination, edge.weight);
+                    flooding.addEdge(edge.getSource(), edge.getDestination(), edge.weight);
                 }
 
                 Stack<String> path = flooding.getNodePath(source, target);

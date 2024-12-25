@@ -10,11 +10,11 @@ public class Node {
 
     public double x;
     public double y;
-    public String name;
+    String name;
     private boolean visited;
     private final Circle circle;
     private final Text text;
-    public LinkedList<Edge> edges;
+     LinkedList<Edge> edges;
 
     Node(double x,double y, String name) {
         circle = new Circle(10);

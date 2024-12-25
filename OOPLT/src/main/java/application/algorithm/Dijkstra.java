@@ -31,9 +31,9 @@ public class Dijkstra extends GraphAlgorithm {
             else shortestPathMap.put(node, Double.POSITIVE_INFINITY);
         }
 
-        for (Edge edge : start.edges) {
-            shortestPathMap.put(edge.destination, edge.weight);
-            changedAt.put(edge.destination, start);
+        for (Edge edge : start.getEdge()) {
+            shortestPathMap.put(edge.getDestination(), edge.weight);
+            changedAt.put(edge.getDestination(), start);
         }
 
         start.visit();
@@ -42,21 +42,21 @@ public class Dijkstra extends GraphAlgorithm {
             Node currentNode = closestReachableUnvisited(shortestPathMap);
 
             if (currentNode == null) {
-                return ("There isn't a path between " + start.name + " and " + end.name);
+                return ("There isn't a path between " + start.getName() + " and " + end.getName());
             }
 
             if (currentNode == end) {
 
                 Node child = end;
 
-                StringBuilder path = new StringBuilder(end.name);
+                StringBuilder path = new StringBuilder(end.getName());
                 while (true) {
                     Node parent = changedAt.get(child);
                     if (parent == null) {
                         break;
                     }
 
-                    path.insert(0, parent.name + "->");
+                    path.insert(0, parent.getName() + "->");
                     child = parent;
                 }
                 output += path;
@@ -65,16 +65,16 @@ public class Dijkstra extends GraphAlgorithm {
             }
             currentNode.visit();
 
-            for (Edge edge : currentNode.edges) {
-                if (edge.destination.isVisited())
+            for (Edge edge : currentNode.getEdge()) {
+                if (edge.getDestination().isVisited())
                     continue;
 
                 if (shortestPathMap.get(currentNode)
                         + edge.weight
-                        < shortestPathMap.get(edge.destination)) {
-                    shortestPathMap.put(edge.destination,
+                        < shortestPathMap.get(edge.getDestination())) {
+                    shortestPathMap.put(edge.getDestination(),
                             shortestPathMap.get(currentNode) + edge.weight);
-                    changedAt.put(edge.destination, currentNode);
+                    changedAt.put(edge.getDestination(), currentNode);
                 }
             }
         }
@@ -93,9 +93,9 @@ public class Dijkstra extends GraphAlgorithm {
             else shortestPathMap.put(node, Double.POSITIVE_INFINITY);
         }
 
-        for (Edge edge : start.edges) {
-            shortestPathMap.put(edge.destination, edge.weight);
-            changedAt.put(edge.destination, start);
+        for (Edge edge : start.getEdge()) {
+            shortestPathMap.put(edge.getDestination(), edge.weight);
+            changedAt.put(edge.getDestination(), start);
         }
 
         start.visit();
@@ -124,16 +124,16 @@ public class Dijkstra extends GraphAlgorithm {
             }
             currentNode.visit();
 
-            for (Edge edge : currentNode.edges) {
-                if (edge.destination.isVisited())
+            for (Edge edge : currentNode.getEdge()) {
+                if (edge.getDestination().isVisited())
                     continue;
 
                 if (shortestPathMap.get(currentNode)
                         + edge.weight
-                        < shortestPathMap.get(edge.destination)) {
-                    shortestPathMap.put(edge.destination,
+                        < shortestPathMap.get(edge.getDestination())) {
+                    shortestPathMap.put(edge.getDestination(),
                             shortestPathMap.get(currentNode) + edge.weight);
-                    changedAt.put(edge.destination, currentNode);
+                    changedAt.put(edge.getDestination(), currentNode);
                 }
             }
         }

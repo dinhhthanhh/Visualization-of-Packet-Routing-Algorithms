@@ -10,6 +10,7 @@ public class Graph {
     public void addNode(double x, double y, String name){
         Node temp = new Node(x,y,name);
         nodes.add(temp);
+        System.out.println("Node added Successfully");
     }
     public Node getNode(String from){
         for(Node i:nodes){

@@ -44,28 +44,28 @@ public class GraphAlgorithm {
     }
     private void addEdgeHelper(Node a, Node b, double weight) {
 
-        for (Edge edge : a.edges) {
-            if (edge.source == a && edge.destination == b) {
+        for (Edge edge : a.getEdge()) {
+            if (edge.getSource() == a && edge.getDestination() == b) {
                 // Update the value in case it's a different one now
                 edge.weight = weight;
                 return;
             }
         }
         // If it hasn't been added already
-        a.edges.add(new Edge(a, b, weight));
+        a.getEdge().add(new Edge(a, b, weight));
     }
 
     public void copyEdge(ArrayList<Edge> edges){
         for(Node node : nodes){
-            edges.addAll(node.edges);
+            edges.addAll(node.getEdge());
         }
     }
 
     public boolean DeleteEd(Node a, Node b) {
-        for (Edge edge : a.edges) {
-            if (edge.source == a && edge.destination == b) {
+        for (Edge edge : a.getEdge()) {
+            if (edge.getSource() == a && edge.getDestination() == b) {
                 // Update the value in case it's a different one now
-                a.edges.remove(edge);
+                a.getEdge().remove(edge);
                 return true;
             }
         }
@@ -73,13 +73,7 @@ public class GraphAlgorithm {
     }
     public void DeleteNo(Node from){
         for(Node node : nodes){
-            for (Edge edge : node.edges) {
-//                System.out.println(edge.source.name+" "+edge.destination.name+" "+edge.weight);
-                if (edge.source == from || edge.destination == from) {
-                    node.edges.remove(edge);
-//                    System.out.println(edge.source.name+" "+edge.destination.name+" "+edge.weight);
-                }
-            }
+            node.getEdge().removeIf(edge -> edge.getSource() == from || edge.getDestination() == from);
         }
         nodes.remove(from);
     }

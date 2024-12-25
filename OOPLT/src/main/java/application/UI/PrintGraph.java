@@ -77,7 +77,7 @@ public class PrintGraph {
                 dragDelta.y = circle.getCenterY() - mouseEvent.getY();
                 circle.getScene().setCursor(Cursor.MOVE);
             } else if (addEdge.isSelected()) {
-                source[0] = node.name;
+                source[0] = node.getName();
                 newEdge = new Line(mouseEvent.getX(), mouseEvent.getY(), mouseEvent.getX(), mouseEvent.getY());
                 endX = new SimpleDoubleProperty(mouseEvent.getX());
                 endY = new SimpleDoubleProperty(mouseEvent.getY());
@@ -85,7 +85,7 @@ public class PrintGraph {
                 newEdge.endYProperty().bind(endY);
                 tempPane.getChildren().add(newEdge);
             } else if (deleteNode.isSelected()) {
-                graph.DeleteNode(node.name);
+                graph.DeleteNode(node.getName());
                 tempPane.getChildren().clear();
                 getGraphPane(tempPane, true);
             }
@@ -93,7 +93,7 @@ public class PrintGraph {
 
         circle.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getClickCount() == 2) {
-                TextInputDialog dialog = new TextInputDialog(node.name);
+                TextInputDialog dialog = new TextInputDialog(node.getName());
                 dialog.setTitle("Update Node Name");
                 dialog.setHeaderText("Enter new name for the node:");
                 dialog.setContentText("New Name:");
@@ -101,7 +101,7 @@ public class PrintGraph {
                 Optional<String> result = dialog.showAndWait();
                 result.ifPresent(newName -> {
                     if (!newName.isEmpty() && graph.getNode(newName.toLowerCase()) == null) {
-                        graph.renameNode(node.name, newName);
+                        graph.renameNode(node.getName(), newName);
                         node.getText().setText(newName);
                         tempPane.getChildren().clear();
                         getGraphPane(tempPane, true);
@@ -143,7 +143,7 @@ public class PrintGraph {
 
                 for (Node node1 : graph.getNodes()) {
                     if (isInside(mouseEvent.getX(), mouseEvent.getY(), node1)) {
-                        graph.addEdge(source[0], node1.name, weight);
+                        graph.addEdge(source[0], node1.getName(), weight);
                     }
                 }
 
@@ -183,7 +183,7 @@ public class PrintGraph {
         line.setOnMouseReleased(_ -> {
             line.getScene().setCursor(Cursor.HAND);
             if (deleteEdge.isSelected()) {
-                graph.DeleteEdge(edge.source.name, edge.destination.name);
+                graph.DeleteEdge(edge.getSource().getName(), edge.getDestination().getName());
                 pane.getChildren().clear();
                 getGraphPane(pane, true);
             }

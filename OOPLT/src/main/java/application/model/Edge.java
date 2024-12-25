@@ -6,8 +6,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
 public class Edge {
-    public Node source;
-    public Node destination;
+    Node source;
+    Node destination;
     public double weight;
     private final Line line ;
     private final Text text;
